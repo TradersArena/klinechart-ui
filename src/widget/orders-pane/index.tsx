@@ -12,6 +12,10 @@
  * limitations under the License.
  */
 
+
+console.log("-======================= ENTERING ORDERSPANE --> INDEX.TSX =----------------------");
+
+
 import { Component, createResource, createMemo, createSignal, createEffect, Show, For, onMount } from 'solid-js'
 import { OverlayCreate, OverlayMode } from '@basttyy/klinecharts'
 import i18n from '../../i18n'
@@ -27,6 +31,25 @@ export interface OrderPanelProps {
   orderController: OrderResource
 }
 
+
+
+
+
+//   orderId: number
+//   action: OrderType
+//   entryPoint: number
+//   exitPoint?: number
+//   stopLoss?: number
+//   takeProfit?: number
+//   lotSize: number
+//   pips?: number
+//   pl?: number
+//   entryTime?: string
+//   exitTime?: string
+//   exitType?: ExitType
+//   partials?: string
+//   sessionId?: number
+
 const GROUP_ID = 'order_panel'
 
 const OrdersPanel: Component<OrderPanelProps> = props => {
@@ -38,7 +61,7 @@ const OrdersPanel: Component<OrderPanelProps> = props => {
   
 
   const onOrderEdited = (order: OrderInfo|null) => {
-    setOrderModalVisible(false)
+    setOrderModalVisible(true)
     syntheticPausePlay(false)
     if (order) {
       drawOrder(order)
@@ -79,8 +102,8 @@ const OrdersPanel: Component<OrderPanelProps> = props => {
   }
 
   onMount(() => {
-    setLoadingVisible(true)
-    loading = true
+    setLoadingVisible(false)
+    loading = false
     const getList =async (action?: OrderType) => {
       const orderlist = action ? orderList().filter(order => (order.action == action)) : ordersList()
       setOrdersList(orderlist)

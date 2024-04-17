@@ -1,3 +1,6 @@
+console.log("-=======  KEYEVENTSTORE . TS =======---");
+
+
 import { createSignal, startTransition } from "solid-js";
 import { indicatorModalVisible, instanceapi, orderPanelVisible, pausedStatus, periodModalVisible, rootlelID, screenshotUrl, setIndicatorModalVisible, setOrderPanelVisible, setPausedStatus, setPeriodModalVisible, setScreenshotUrl, setSettingModalVisible, setSyntheticPauseStatus, settingModalVisible, syntheticPauseStatus } from "../ChartProComponent";
 import { cleanup, datafeed, documentResize, fullScreen, orderModalVisible, range, setOrderModalVisible, setRange, theme } from "./chartStateStore";
@@ -6,6 +9,10 @@ import { Chart } from "@basttyy/klinecharts";
 import { periodInputValue, setPeriodInputValue } from "../widget/timeframe-modal";
 import { setInputClass } from "../component/input";
 import { showOverlaySetting, showPositionSetting } from "./overlaySettingStore";
+
+import { OrderInfo, OrderModifyInfo } from "../types";
+import { drawOrder } from "./positionStore";
+// import { modifyOrder } from "../DefaultOrderController";
 
 export const [ctrlKeyedDown, setCtrlKeyedDown] = createSignal(false)
 export const [widgetref, setWidgetref] = createSignal<string | Chart | HTMLElement>('')
@@ -39,13 +46,70 @@ export const useKeyEvents = () => {
           }
           break;
         case 'z':
+
+          console.log(" Pressed: ctrl [Z]");
+
+          const orderExample: OrderInfo = {
+            orderId: 1,
+            action: 'buy',
+            entryPoint: 67000,
+            // exitPoint: null,
+            stopLoss: 66000,
+            takeProfit: 69000,
+            lotSize: 100,
+            // pips?: number,
+            // pl?: number,
+            entryTime: "2024-04-01T12:00:00Z",
+            // exitTime?: string,
+            // exitType?: ExitType,
+            // partials?: string,
+            // sessionId?: number
+          };
+          drawOrder(orderExample);
           //TODO: we should undo one step
           break;
         case 'y':
+          console.log(" Pressed: ctrl [Y]");
           //TODO: we should redo one step
+          const modifyExmaple: OrderModifyInfo = {
+            id: 1,
+            action: 'buy',
+            entrypoint: 68000,
+            // exitpoint: ,
+            stoploss: 60000,
+            takeprofit: 69200,
+            lotsize: 100,
+            // pips: ,
+            // pl: ,
+            // exittime: ,
+            // exittype: ,
+            // partials: ,
+          };
+          // modifyOrder(modifyExmaple);
           break;
         case 'c':
           //TODO: we should copy any selected overlay to clipboard
+          console.log(" Pressed: ctrl [C]");
+
+          const orderExample2: OrderInfo = {
+            orderId: 2,
+            action: 'buylimit',
+            entryPoint: 60000,
+            // exitPoint: null,
+            // stopLoss: 71000,
+            // takeProfit: 72500,
+            lotSize: 100,
+            // pips?: number,
+            // pl?: number,
+            entryTime: "2024-04-01T12:00:00Z",
+            // exitTime?: string,
+            // exitType?: ExitType,
+            // partials?: string,
+            // sessionId?: number
+          };
+          drawOrder(orderExample2);
+
+
           break;
         case 'v':
           //TODO: we should paste the copied overlay from clipboard

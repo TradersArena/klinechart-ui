@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+console.log("-====================== ENTERING CHART PRO COMPONENTS.TSX ==========-=======--");
+
 import { createSignal, createEffect, onMount, Show, onCleanup, startTransition, Component } from 'solid-js'
 
 import {
@@ -32,12 +34,14 @@ import {
 
 import { translateTimezone } from './widget/timezone-modal/data'
 
-import { SymbolInfo, Period, ChartProOptions, ChartPro, sessionType, OrderInfo, OrderResource, ChartSessionResource } from './types'
+import { SymbolInfo, Period, ChartProOptions, ChartPro, sessionType, OrderInfo, OrderResource, ChartSessionResource, openTrade } from './types'
 import { currenttick, setCurrentTick, setTickTimestamp, tickTimestamp } from './store/tickStore'
 import { orderList, ordercontr, setOrderContr, setCurrentequity } from './store/positionStore'
 import { useChartState, mainIndicators, setMainIndicators, subIndicators, setSubIndicators, chartModified, setChartModified, documentResize, setTheme, theme, setDatafeed } from './store/chartStateStore'
 import { setTimerid, setWidgetref, syntheticPausePlay, useKeyEvents } from './store/keyEventStore'
 import SpeedPopup from './component/popup/timeframe'
+
+import { drawOrder } from './store/positionStore';
 
 const { createIndicator, modifyIndicator, popIndicator, pushOverlay, pushMainIndicator, pushSubIndicator, redrawOrders, redraOverlaysIndiAndFigs } = useChartState()
 
@@ -98,6 +102,9 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
   let loading = false
   let timerId: NodeJS.Timeout
 
+  const [openTrades, setOpenTrades] = createSignal(props.openTrades)
+  const [name, setName] = createSignal(props.name)
+
   const [styles, setStyles] = createSignal(props.styles)
   const [locale, setLocale] = createSignal(props.locale)
 
@@ -115,6 +122,9 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
   const [indicatorSettingModalParams, setIndicatorSettingModalParams] = createSignal({
     visible: false, indicatorName: '', paneId: '', calcParams: [] as Array<any>
   })
+  
+  setOpenTrades(props.openTrades)
+  setName(props.name)
   setSymbol(props.symbol)
   setTheme(props.theme)
   setChartsession(props.chartSession)
@@ -126,6 +136,10 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
   setDatafeed(props.datafeed)
 
   props.ref({
+    setOpenTrades: (openTrades: openTrade[]) => { setOpenTrades(openTrades) },
+    getOpenTrades: () => openTrades(),
+    setName: (name: string) => { setName(name) },
+    getName: () => name(),
     setTheme,
     getTheme: () => theme(),
     setStyles,
@@ -139,6 +153,13 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
     setPeriod,
     getPeriod: () => period()
   })
+
+  createEffect(() => {
+    console.log("Name changed to:", name());
+    // You can perform other actions here in response to name changes
+    // For example, update some other state, call an API, etc.
+  });
+
 
   const adjustFromTo = (period: Period, toTimestamp: number, count: number) => {
     let to = toTimestamp
@@ -238,6 +259,9 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
       }
     })
 
+
+    console.log("widget", widget)
+
     if (widget) {
       setInstanceapi(widget)
       setWidgetref(widgetRef!)
@@ -321,6 +345,28 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
       }
     })
   })
+
+ 
+  console.log("drwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrderdrwaOrder");
+
+  // const orderExample: OrderInfo = {
+  //   orderId: 1,
+  //   action: 'buy',
+  //   entryPoint: 71200,
+  //   // exitPoint: null,
+  //   stopLoss: 71000,
+  //   takeProfit: 72500,
+  //   lotSize: 100,
+  //   // pips?: number,
+  //   // pl?: number,
+  //   entryTime: "2024-04-01T12:00:00Z",
+  //   // exitTime?: string,
+  //   // exitType?: ExitType,
+  //   // partials?: string,
+  //   // sessionId?: number
+  // };
+  // drawOrder(orderExample);
+
 
   onCleanup(() => {
     document.removeEventListener('contextmenu', function(event) {
@@ -477,6 +523,7 @@ const ChartProComponent: Component<ChartProComponentProps> = props => {
       }
     })
   })
+
 
   createEffect(() => {
     widget?.setLocale(locale())

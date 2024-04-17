@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+console.log(" ========== ENTERING    CHART   PRO     OPTIONS    . TSX===");
+
 import { KLineData, Styles, DeepPartial, OverlayCreate, FigureCreate, IndicatorCreate, PaneOptions } from '@basttyy/klinecharts'
 
 export type OrderType = 'buy'|'sell'|'buystop'|'buylimit'|'sellstop'|'selllimit'
@@ -184,6 +186,13 @@ export interface ChartSessionResource {
   // syncState (chart_state: ChartObjType): Promise<boolean>
 }
 
+export interface openTrade {
+  id: number;
+  sl: number;  // Stop-loss value
+  e: number;   // Entry value
+  tp: number;  // Take-profit value
+}
+
 export interface ChartProOptions {
   container: string | HTMLElement
   styles?: DeepPartial<Styles>
@@ -204,9 +213,16 @@ export interface ChartProOptions {
   orderController: OrderResource
   chartSessionController: ChartSessionResource
   rootElementId: string
+  openTrades?: openTrade[]
+  name: string
 }
 
 export interface ChartPro {
+
+  setOpenTrades(openTrades: openTrade[]): void
+  getOpenTrades(): openTrade[]
+  setName(name: string): void
+  getName(): string
   setTheme(theme: string): void
   getTheme(): string
   setStyles(styles: DeepPartial<Styles>): void

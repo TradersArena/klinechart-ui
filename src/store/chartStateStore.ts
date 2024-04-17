@@ -1,3 +1,6 @@
+console.log("-=========================== ENTERING CHART STATE STORE.TS ==================================-");
+
+
 import { Chart, DeepPartial, Indicator, IndicatorCreate, Nullable, Overlay, OverlayCreate, OverlayEvent, OverlayStyle, PaneOptions, SmoothLineStyle, dispose } from "@basttyy/klinecharts"
 import { chartsession, chartsessionCtr, instanceapi, setInstanceapi, symbol } from "../ChartProComponent"
 import { ChartObjType, ChartSessionResource, OrderInfo, OrderResource, OrderStylesType, SymbolInfo, sessionType } from "../types"
@@ -15,6 +18,9 @@ import { useGetOverlayStyle } from "./overlaystyle/useOverlayStyles"
 export const [mainIndicators, setMainIndicators] = createSignal([''])
 export const [subIndicators, setSubIndicators] = createSignal({})
 export const [chartModified, setChartModified] = createSignal(false)
+
+
+
 export const [theme, setTheme] = createSignal('')
 export const [fullScreen, setFullScreen] = createSignal(false)
 export const [orderModalVisible, setOrderModalVisible] = createSignal(false)

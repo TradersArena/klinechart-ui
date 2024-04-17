@@ -1,3 +1,5 @@
+console.log(" -==================== ENTERING POSITIONSTORE.TS ===============-----")
+
 import { Chart, Nullable, Overlay, OverlayEvent, Point } from '@basttyy/klinecharts';
 import { ExitType, OrderInfo, OrderModifyInfo, OrderResource, OrderType, sessionType } from '../types';
 import { createSignal } from 'solid-js';
@@ -238,10 +240,31 @@ export const useOrder = () => {
   }
 };
 
+// export interface OrderInfo {
+//   orderId: number
+//   action: OrderType
+//   entryPoint: number
+//   exitPoint?: number
+//   stopLoss?: number
+//   takeProfit?: number
+//   lotSize: number
+//   pips?: number
+//   pl?: number
+//   entryTime?: string
+//   exitTime?: string
+//   exitType?: ExitType
+//   partials?: string
+//   sessionId?: number
+// }
+
+
+
+
 export const drawOrder = (order: OrderInfo|null) => {
   if (!order)
     return
   let overlay = instanceapi()?.getOverlayById(`orderline_${order!.orderId}`)
+  console.log("overlay", overlay);
   if(overlay) {
     instanceapi()?.removeOverlay({    //remove the overlay first to prevent flooding this backend with api calls
       id: overlay.id,
@@ -273,6 +296,12 @@ export const drawOrder = (order: OrderInfo|null) => {
         points.push({ timestamp: Date.parse(order?.entryTime!), value: order.takeProfit })
         points.push({ timestamp: Date.parse(order?.entryTime!), value: order.stopLoss })
       }
+
+      console.log("points", points);
+      console.log("overlay", overlay);
+      console.log(`orderline_${order?.orderId}`);
+      console.log("instanceapi", instanceapi());
+
       break
     case 'buystop':
       if (!order?.stopLoss && !order?.takeProfit) {
@@ -361,3 +390,5 @@ export const drawOrder = (order: OrderInfo|null) => {
     lock,
   })
 };
+
+

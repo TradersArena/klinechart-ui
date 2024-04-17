@@ -12,6 +12,8 @@
  * limitations under the License.
  */
 
+console.log(" -================= ENTERING INDEX.TS @ ROOT =------------------ ");
+
 import { registerOverlay } from '@basttyy/klinecharts'
 
 import overlays from './extension'
